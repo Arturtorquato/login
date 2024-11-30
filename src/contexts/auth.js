@@ -9,6 +9,11 @@ export const AuthProvider = ({ children }) => {
     const userToken = localStorage.getItem("user_token");
     const usersStorage = localStorage.getItem("users_bd");
 
+    if (!usersStorage) { //Deleta esta parte para remover o mockup da senha e gmail.
+      const defaultUser = [{ email: "gmail", password: "123" }];
+      localStorage.setItem("users_bd", JSON.stringify(defaultUser));
+    }
+
     if (userToken && usersStorage) {
       const hasUser = JSON.parse(usersStorage)?.filter(
         (user) => user.email === JSON.parse(userToken).email

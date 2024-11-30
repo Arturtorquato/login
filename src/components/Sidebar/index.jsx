@@ -1,40 +1,44 @@
-import React from 'react'
-import { Container, Content } from './styles'
-import { 
-  FaTimes, 
-  FaHome, 
-  FaEnvelope, 
-  FaRegSun, 
-  FaUserAlt, 
-  FaIdCardAlt, 
-  FaRegFileAlt,
-  FaRegCalendarAlt,
-  FaChartBar
-} from 'react-icons/fa'
-
-import SidebarItem from '../SidebarItem'
+import React, { useContext } from 'react'; // Certifique-se de incluir useContext
+import { useNavigate } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
+import { Container, Content } from './styles';
+import SidebarItem from '../SidebarItem';
+import { AuthContext } from '../../contexts/auth'; // Caminho corrigido
 
 const Sidebar = ({ active }) => {
-
+  const navigate = useNavigate();
+  
   const closeSidebar = () => {
-    active(false)
-  }
+    active(false);
+  };
+  
+  const { signout } = useContext(AuthContext);
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    closeSidebar(); // Fechar a sidebar após a navegação
+  };
+
+  const handleSignout = () => {
+    signout(); // Executa o logout
+    handleNavigation('/'); // Redireciona para a página inicial
+  };
 
   return (
     <Container sidebar={active}>
-      <FaTimes onClick={closeSidebar} />  
+      <FaTimes onClick={closeSidebar} />
       <Content>
-        <SidebarItem Icon={FaHome} Text="1" />
-        <SidebarItem Icon={FaHome} Text="2" />
-        <SidebarItem Icon={FaHome} Text="3" />
-        <SidebarItem Icon={FaHome} Text="4" />
-        <SidebarItem Icon={FaHome} Text="5" />
-        <SidebarItem Icon={FaHome} Text="6" />
-        <SidebarItem Icon={FaHome} Text="7" />
-        <SidebarItem Icon={FaHome} Text="8" />
+      <SidebarItem Text="Home" onClick={() => handleNavigation('/home')} />
+        <SidebarItem Text="Usuario" onClick={() => handleNavigation('/usuario')} />
+        <SidebarItem Text="Professores" onClick={() => handleNavigation('/professor')} />
+        <SidebarItem Text="Estudantes" onClick={() => handleNavigation('/estudante')} />
+        <SidebarItem Text="Profissionais" onClick={() => handleNavigation('/profissional')} />
+        <SidebarItem Text="Eventos" onClick={() => handleNavigation('/evento')} />
+        <SidebarItem Text="Compromisso" onClick={() => handleNavigation('/compromisso')} />
+        <SidebarItem Text="Sair" onClick={handleSignout} />
       </Content>
     </Container>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

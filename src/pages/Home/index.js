@@ -10,7 +10,13 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-   <Header />
+    <>
+      <Header />
+      <C.Container>
+        <C.Title>Bem vindo</C.Title>
+        <p>Utilize a Side-Bar para navegar pelo o sistema</p>
+      </C.Container>
+    </>
   );
 };
 

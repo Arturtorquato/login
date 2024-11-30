@@ -1,13 +1,12 @@
-import React from 'react'
-import { Container } from './styles'
+import React from 'react';
+import { Container } from './styles';
 
-const SidebarItem = ({ Icon, Text }) => {
+const SidebarItem = ({ Text, onClick }) => {
   return (
-    <Container>
-      <Icon />
+    <Container onClick={onClick}> 
       {Text}
     </Container>
-  )
-}
+  );
+};
 
-export default SidebarItem
+export default SidebarItem;

@@ -4,14 +4,14 @@ export const Container = styled.div`
   background-color: #171923;
   position: fixed;
   height: 100%;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: ${props => (props.sidebar ? '0' : '-100%')}; 
   width: 300px;
-  left: ${props => props.sidebar ? '0' : '-100%'};
-  animation: showSidebar .4s;
+  transition: left 0.4s ease; 
+  z-index: 999; 
 
   > svg {
-    position: fixed;
+    position: absolute;
     color: white;
     width: 30px;
     height: 30px;
@@ -19,19 +19,11 @@ export const Container = styled.div`
     margin-left: 32px;
     cursor: pointer;
   }
-
-  @keyframes showSidebar {
-    from {
-      opacity: 0;
-      width: 0;
-    }
-    to {
-      opacity: 1;
-      width: 300px;
-    }
-  }
 `;
 
 export const Content = styled.div`
-  margin-top: 100px;
+  margin-top: 80px; 
+  display: flex;
+  flex-direction: column; 
+  padding: 0 10px; 
 `;
