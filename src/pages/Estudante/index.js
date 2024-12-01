@@ -19,14 +19,14 @@ const Estudante = () => {
   const [responsaveis, setResponsaveis] = useState("");
   const [telefone, setTelefone] = useState("");
   const [necessidadesEspeciais, setNecessidadesEspeciais] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(true);
   const [estudanteId, setEstudanteId] = useState("");
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
 
   const fetchAllEstudantes = async () => {
     try {
-      const response = await fetch("http://localhost:5000/students");
+      const response = await fetch("http://localhost:8080/students");
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -37,7 +37,7 @@ const Estudante = () => {
   // Função para buscar estudante por ID
   const fetchEstudanteById = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/students/id/${estudanteId}`);
+      const response = await fetch(`http://localhost:8080/students/id/${estudanteId}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -47,7 +47,7 @@ const Estudante = () => {
 
   const fetchEstudanteByName = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/students/name/${nome}`);
+      const response = await fetch(`http://localhost:8080/students/name/${nome}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -63,8 +63,8 @@ const Estudante = () => {
     }
 
     const newEstudante = {
-      nome,
-      idade,
+      name: nome,
+      age: idade,
       parents: responsaveis,
       phone_number: telefone,
       special_needs: necessidadesEspeciais,
@@ -72,7 +72,7 @@ const Estudante = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/students", {
+      const response = await fetch("http://localhost:8080/students", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,8 +96,8 @@ const Estudante = () => {
     }
 
     const updatedEstudante = {
-      nome,
-      idade,
+      name: nome,
+      age: idade,
       parents: responsaveis,
       phone_number: telefone,
       special_needs: necessidadesEspeciais,
@@ -105,7 +105,7 @@ const Estudante = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/students/${estudanteId}`, {
+      const response = await fetch(`http://localhost:8080/students/${estudanteId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +128,7 @@ const Estudante = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/students/${estudanteId}`, {
+      const response = await fetch(`http://localhost:8080/students/${estudanteId}`, {
         method: "DELETE",
       });
 
@@ -212,12 +212,6 @@ const Estudante = () => {
           value={necessidadesEspeciais}
           onChange={(e) => setNecessidadesEspeciais(e.target.value)}
         />
-        <Input
-          type="text"
-          placeholder="Digite o Status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        />
         <Button Text="Cadastrar Estudante" onClick={handleCreateEstudante} />
       </C.Content>
 
@@ -260,12 +254,6 @@ const Estudante = () => {
           value={necessidadesEspeciais}
           onChange={(e) => setNecessidadesEspeciais(e.target.value)}
         />
-        <Input
-          type="text"
-          placeholder="Digite o Status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        />
         <Button Text="Atualizar Estudante" onClick={handleUpdateEstudante} />
       </C.Content>
 
@@ -285,8 +273,9 @@ const Estudante = () => {
       </C.LabelSignup>
       {/* Exibir respostas ou erros */}
       <div>
-        {response && <div>{JSON.stringify(response, null, 2)}</div>}
-        {error && <div>{error}</div>}
+        {response && (
+          <pre>{JSON.stringify(response, null, 2)}</pre>
+        )}
       </div>
     </C.Container>
   );

@@ -16,16 +16,15 @@ const Professor = () => {
   const [nome, setNome] = useState("");
   const [materia, setMateria] = useState("");
   const [gmail, setGmail] = useState("");
+  const [status, setStatus] = useState(true);
   const [numeroDeTelefone, setNumeroDeTelefone] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [cep, setCep] = useState("");
   const [professorId, setProfessorId] = useState("");
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
 
   const fetchAllProfessors = async () => {
     try {
-      const response = await fetch("http://localhost:5000/professors");
+      const response = await fetch("http://localhost:8080/teachers");
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -38,7 +37,7 @@ const Professor = () => {
   // Função para buscar professor por ID
   const fetchProfessorById = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/professors/id/${professorId}`);
+      const response = await fetch(`http://localhost:8080/teachers/id/${professorId}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -49,7 +48,7 @@ const Professor = () => {
 
   const fetchProfessorByName = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/professors/nome/${nome}`); // Alterar professorName para nome
+      const response = await fetch(`http://localhost:8080/teachers/name/${nome}`); // Alterar professorName para nome
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -61,22 +60,21 @@ const Professor = () => {
 
   // Função para criar um novo professor
   const handleCreateProfessor = async () => {
-    if (!nome || !materia || !gmail || !numeroDeTelefone || !cpf || !cep) {
+    if (!nome || !materia || !gmail || !numeroDeTelefone) {
       setError("Preencha todos os campos");
       return;
     }
   
     const newProfessor = {
-      nome,
-      materia,
-      gmail,
-      numero_de_telefone: numeroDeTelefone,
-      cpf,
-      cep,
+      name: nome,
+      school_disciplines: materia,
+      contact: gmail,
+      phone_number: numeroDeTelefone,
+      status
     };
   
     try {
-      const response = await fetch("http://localhost:5000/professors", {
+      const response = await fetch("http://localhost:8080/teachers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,22 +93,21 @@ const Professor = () => {
 
   // Função para atualizar um professor
   const handleUpdateProfessor = async () => {
-    if (!professorId || !nome || !materia || !gmail || !numeroDeTelefone || !cpf || !cep) {
+    if (!professorId || !nome || !materia || !gmail || !numeroDeTelefone) {
       setError("Preencha todos os campos");
       return;
     }
   
     const updatedProfessor = {
-      nome,
-      materia,
-      gmail,
-      numero_de_telefone: numeroDeTelefone,
-      cpf,
-      cep,
+      name: nome,
+      school_disciplines: materia,
+      contact: gmail,
+      phone_number: numeroDeTelefone,
+      status
     };
   
     try {
-      const response = await fetch(`http://localhost:5000/professors/${professorId}`, {
+      const response = await fetch(`http://localhost:8080/teachers/${professorId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -134,7 +131,7 @@ const Professor = () => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5000/professors/${professorId}`, {
+      const response = await fetch(`http://localhost:8080/teachers/${professorId}`, {
         method: "DELETE",
       });
   
@@ -212,18 +209,6 @@ const Professor = () => {
           value={numeroDeTelefone}
           onChange={(e) => setNumeroDeTelefone(e.target.value)}
         />
-        <Input
-          type="text"
-          placeholder="Digite o CPF"
-          value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Digite o CEP"
-          value={cep}
-          onChange={(e) => setCep(e.target.value)}
-        />
         <Button Text="Cadastrar Professor" onClick={handleCreateProfessor} />
       </C.Content>
   
@@ -259,18 +244,6 @@ const Professor = () => {
           placeholder="Digite o Número de Telefone"
           value={numeroDeTelefone}
           onChange={(e) => setNumeroDeTelefone(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Digite o CPF"
-          value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Digite o CEP"
-          value={cep}
-          onChange={(e) => setCep(e.target.value)}
         />
         <Button Text="Atualizar Professor" onClick={handleUpdateProfessor} />
       </C.Content>

@@ -25,7 +25,7 @@ const Compromisso = () => {
   // Função para buscar todos os compromissos
   const fetchAllCompromissos = async () => {
     try {
-      const response = await fetch("http://localhost:5000/appointments");
+      const response = await fetch("http://localhost:8080/appointments");
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -36,7 +36,7 @@ const Compromisso = () => {
   // Função para buscar compromisso por ID
   const fetchCompromissoById = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/appointments/${compromissoId}`);
+      const response = await fetch(`http://localhost:8080/appointments/id/${compromissoId}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -47,7 +47,7 @@ const Compromisso = () => {
   // Função para buscar compromisso por data
   const fetchCompromissoByDate = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/appointments/date/${date}`);
+      const response = await fetch(`http://localhost:8080/appointments/date/${date}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -63,7 +63,7 @@ const Compromisso = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/appointments/student/${student}`);
+      const response = await fetch(`http://localhost:8080/appointments/student/${student}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -87,7 +87,7 @@ const Compromisso = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/appointments", {
+      const response = await fetch("http://localhost:8080/appointments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,7 +119,7 @@ const Compromisso = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/appointments/${compromissoId}`, {
+      const response = await fetch(`http://localhost:8080/appointments/${compromissoId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -142,7 +142,7 @@ const Compromisso = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/appointments/${compromissoId}`, {
+      const response = await fetch(`http://localhost:8080/appointments/${compromissoId}`, {
         method: "DELETE",
       });
 
@@ -184,7 +184,7 @@ const Compromisso = () => {
       <C.Content>
         <C.Label>Buscar Compromisso por Data</C.Label>
         <Input
-          type="text"
+          type="date"
           placeholder="Digite a Data do Compromisso"
           value={date}
           onChange={(e) => setDate(e.target.value)}
@@ -220,7 +220,7 @@ const Compromisso = () => {
           onChange={(e) => setComments(e.target.value)}
         />
         <Input
-          type="text"
+          type="date"
           placeholder="Digite a Data do Compromisso"
           value={date}
           onChange={(e) => setDate(e.target.value)}
@@ -262,7 +262,7 @@ const Compromisso = () => {
           onChange={(e) => setComments(e.target.value)}
         />
         <Input
-          type="text"
+          type="date"
           placeholder="Digite a Data do Compromisso"
           value={date}
           onChange={(e) => setDate(e.target.value)}
@@ -295,10 +295,7 @@ const Compromisso = () => {
         <strong>Resposta da API:</strong>
       </C.LabelSignup>
       {/* Exibir respostas ou erros */}
-      <div>
-        {response && <div>{JSON.stringify(response, null, 2)}</div>}
-        {error && <div>{error}</div>}
-      </div>
+      <div>{response && <pre>{JSON.stringify(response, null, 2)}</pre>}</div>
     </C.Container>
   );
 };

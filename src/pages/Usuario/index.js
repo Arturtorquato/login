@@ -15,20 +15,20 @@ const Usuario = () => {
 
   // Estados para armazenar os dados dos usuários e respostas
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
   const [nivel, setNivel] = useState("");
   const [status, setStatus] = useState("on");
   const [user, setUser] = useState("");
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
+  const [pwd, setPwd] = useState("");
   const [response, setResponse] = useState(null); // Para armazenar a resposta da API
   const [error, setError] = useState("");
 
   // Função para buscar todos os usuários
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/users");
+      const response = await fetch("http://localhost:8080/users");
       const data = await response.json();
       setResponse(data); // Exibe resposta na tela
     } catch (error) {
@@ -36,10 +36,10 @@ const Usuario = () => {
     }
   };
 
-   //Função para exibir todos os usuarios
+  //Função para exibir todos os usuarios
   const fetchAllUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/users");
+      const response = await fetch("http://localhost:8080/users");
       const data = await response.json();
       setResponse(data); // Exibe resposta na tela
     } catch (error) {
@@ -50,7 +50,7 @@ const Usuario = () => {
   // Função para buscar usuário por ID
   const fetchUserById = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`);
+      const response = await fetch(`http://localhost:8080/users/id/${userId}`, {method: 'GET'});
       const data = await response.json();
       setResponse(data); // Exibe resposta na tela
     } catch (error) {
@@ -60,7 +60,7 @@ const Usuario = () => {
 
   const fetchUserByName = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/users/${userName}`);
+      const response = await fetch(`http://localhost:8080/users/name/${userName}`);
       const data = await response.json();
       setResponse(data); // Exibe resposta na tela
     } catch (error) {
@@ -70,22 +70,22 @@ const Usuario = () => {
 
   // Função para criar um novo usuário
   const handleCreateUser = async () => {
-    if (!email || !senha || !nome || !nivel || !user) {
+    if (!email || !nome || !nivel || !user || !pwd || !status) {
       setError("Preencha todos os campos");
       return;
     }
 
     const newUser = {
       email,
-      senha,
-      nome,
-      nivel,
+      name: nome,
+      level: nivel,
       status,
       user,
+      pwd
     };
 
     try {
-      const response = await fetch("http://localhost:5000/users", {
+      const response = await fetch("http://localhost:8080/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,18 +103,22 @@ const Usuario = () => {
 
   // Função para atualizar um usuário
   const handleUpdateUser = async () => {
-    if (!userId || !nome || !nivel) {
+    if (!email || !nome || !nivel || !user || !pwd || !status) {
       setError("Preencha todos os campos");
       return;
     }
 
     const updatedUser = {
-      nome,
-      nivel,
+      email,
+      name: nome,
+      level: nivel,
+      status,
+      user,
+      pwd
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`, {
+      const response = await fetch(`http://localhost:8080/users/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +141,7 @@ const Usuario = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`, {
+      const response = await fetch(`http://localhost:8080/users/${userId}`, {
         method: "DELETE",
       });
 
@@ -159,8 +163,8 @@ const Usuario = () => {
       {sidebar && <Sidebar active={setSidebar} />}
       {/* Formulário para exibir todos os usuários */}
       <C.Content>
-         <C.Label>Exibir Todos os Usuários</C.Label>
-         <Button Text="Buscar Todos os Usuários" onClick={fetchAllUsers} />
+        <C.Label>Exibir Todos os Usuários</C.Label>
+        <Button Text="Buscar Todos os Usuários" onClick={fetchAllUsers} />
       </C.Content>
       {/* Formulário de GET (Buscar usuário por ID) */}
       <C.Content>
@@ -182,7 +186,7 @@ const Usuario = () => {
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
         />
-        <Button Text="Buscar Usuário" onClick={fetchUserById} />
+        <Button Text="Buscar Usuário" onClick={fetchUserByName} />
       </C.Content>
 
       {/* Formulário de POST (Criar usuário) */}
@@ -201,12 +205,6 @@ const Usuario = () => {
           onChange={(e) => setUser(e.target.value)}
         />
         <Input
-          type="password"
-          placeholder="Digite sua Senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-        />
-        <Input
           type="text"
           placeholder="Digite seu Nome"
           value={nome}
@@ -217,6 +215,12 @@ const Usuario = () => {
           placeholder="Digite o Nível"
           value={nivel}
           onChange={(e) => setNivel(e.target.value)}
+        />
+        <Input
+          type="text"
+          placeholder="Digite o pwd"
+          value={pwd}
+          onChange={(e) => setPwd(e.target.value)}
         />
         <Button Text="Cadastrar" onClick={handleCreateUser} />
       </C.Content>
@@ -230,7 +234,7 @@ const Usuario = () => {
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
         />
-       <Input
+        <Input
           type="email"
           placeholder="Digite seu novo E-mail"
           value={email}
@@ -243,12 +247,6 @@ const Usuario = () => {
           onChange={(e) => setUser(e.target.value)}
         />
         <Input
-          type="password"
-          placeholder="Digite sua nova Senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-        />
-        <Input
           type="text"
           placeholder="Digite seu novo Nome"
           value={nome}
@@ -259,6 +257,12 @@ const Usuario = () => {
           placeholder="Digite o seu novo Nível"
           value={nivel}
           onChange={(e) => setNivel(e.target.value)}
+        />
+         <Input
+          type="text"
+          placeholder="Digite o pwd"
+          value={pwd}
+          onChange={(e) => setPwd(e.target.value)}
         />
         <Button Text="Atualizar" onClick={handleUpdateUser} />
       </C.Content>
@@ -280,11 +284,7 @@ const Usuario = () => {
       <C.LabelSignup>
         <strong>Resposta da API:</strong>
       </C.LabelSignup>
-      <div>
-        {response && (
-          <pre>{JSON.stringify(response, null, 2)}</pre>
-        )}
-      </div>
+      <div>{response && <pre>{JSON.stringify(response, null, 2)}</pre>}</div>
     </C.Container>
   );
 };

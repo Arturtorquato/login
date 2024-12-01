@@ -23,7 +23,7 @@ const Evento = () => {
   // Função para buscar todos os eventos
   const fetchAllEventos = async () => {
     try {
-      const response = await fetch("http://localhost:5000/events");
+      const response = await fetch("http://localhost:8080/events");
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -34,7 +34,7 @@ const Evento = () => {
   // Função para buscar evento por ID
   const fetchEventoById = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/events/${eventoId}`);
+      const response = await fetch(`http://localhost:8080/events/id/${eventoId}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -45,7 +45,7 @@ const Evento = () => {
   // Função para buscar evento por data
   const fetchEventoByDate = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/events/date/${data}`);
+      const response = await fetch(`http://localhost:8080/events/date/${data}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -67,7 +67,7 @@ const Evento = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/events", {
+      const response = await fetch("http://localhost:8080/events", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +97,7 @@ const Evento = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/events/${eventoId}`, {
+      const response = await fetch(`http://localhost:8080/events/${eventoId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -120,7 +120,7 @@ const Evento = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/events/${eventoId}`, {
+      const response = await fetch(`http://localhost:8080/events/${eventoId}`, {
         method: "DELETE",
       });
 
@@ -186,7 +186,7 @@ const Evento = () => {
           onChange={(e) => setComentarios(e.target.value)}
         />
         <Input
-          type="text"
+          type="date"
           placeholder="Digite a Data do Evento"
           value={data}
           onChange={(e) => setData(e.target.value)}
@@ -216,7 +216,7 @@ const Evento = () => {
           onChange={(e) => setComentarios(e.target.value)}
         />
         <Input
-          type="text"
+          type="date"
           placeholder="Digite a Data do Evento"
           value={data}
           onChange={(e) => setData(e.target.value)}
@@ -239,10 +239,7 @@ const Evento = () => {
         <strong>Resposta da API:</strong>
       </C.LabelSignup>
       {/* Exibir respostas ou erros */}
-      <div>
-        {response && <div>{JSON.stringify(response, null, 2)}</div>}
-        {error && <div>{error}</div>}
-      </div>
+      <div>{response && <pre>{JSON.stringify(response, null, 2)}</pre>}</div>
     </C.Container>
   );
 };

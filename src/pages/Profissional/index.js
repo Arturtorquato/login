@@ -17,7 +17,7 @@ const Profissional = () => {
   const [especialidade, setEspecialidade] = useState("");
   const [contato, setContato] = useState("");
   const [telefone, setTelefone] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(true);
   const [profissionalId, setProfissionalId] = useState("");
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
@@ -25,7 +25,7 @@ const Profissional = () => {
   // Função para buscar todos os profissionais
   const fetchAllProfissionais = async () => {
     try {
-      const response = await fetch("http://localhost:5000/professionals");
+      const response = await fetch("http://localhost:8080/professionals");
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -36,7 +36,7 @@ const Profissional = () => {
   // Função para buscar profissional por ID
   const fetchProfissionalById = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/professionals/id/${profissionalId}`);
+      const response = await fetch(`http://localhost:8080/professionals/id/${profissionalId}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -47,7 +47,7 @@ const Profissional = () => {
   // Função para buscar profissional por nome
   const fetchProfissionalByName = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/professionals/name/${nome}`);
+      const response = await fetch(`http://localhost:8080/professionals/name/${nome}`);
       const data = await response.json();
       setResponse(data);
     } catch (error) {
@@ -71,7 +71,7 @@ const Profissional = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/professionals", {
+      const response = await fetch("http://localhost:8080/professionals", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const Profissional = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/professionals/${profissionalId}`, {
+      const response = await fetch(`http://localhost:8080/professionals/${profissionalId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const Profissional = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/professionals/${profissionalId}`, {
+      const response = await fetch(`http://localhost:8080/professionals/${profissionalId}`, {
         method: "DELETE",
       });
 
@@ -203,12 +203,6 @@ const Profissional = () => {
           value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
         />
-        <Input
-          type="text"
-          placeholder="Digite o Status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        />
         <Button Text="Cadastrar Profissional" onClick={handleCreateProfissional} />
       </C.Content>
 
@@ -245,12 +239,6 @@ const Profissional = () => {
           value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
         />
-        <Input
-          type="text"
-          placeholder="Digite o Status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        />
         <Button Text="Atualizar Profissional" onClick={handleUpdateProfissional} />
       </C.Content>
 
@@ -269,10 +257,7 @@ const Profissional = () => {
         <strong>Resposta da API:</strong>
       </C.LabelSignup>
       {/* Exibir respostas ou erros */}
-      <div>
-        {response && <div>{JSON.stringify(response, null, 2)}</div>}
-        {error && <div>{error}</div>}
-      </div>
+      <div>{response && <pre>{JSON.stringify(response, null, 2)}</pre>}</div>
     </C.Container>
   );
 };
